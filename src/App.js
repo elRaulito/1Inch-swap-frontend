@@ -6,15 +6,27 @@ import Tokens from "./components/Tokens";
 import Docs from "./components/Docs";
 import {useConnect, useAccount} from "wagmi"
 import {MetaMaskConnector} from "@wagmi/connectors/metaMask"
+import { Lucid , Blockfrost,utf8ToHex,Data,Constr, Utils} from "lucid-cardano"
+import React,{useEffect} from 'react';
 
-function App() {
-  const {address, isConnected} = useAccount()
-  const {connect} = useConnect({
-    connector: new MetaMaskConnector(),
-  })
+async function App() {
+  const [api,setApi] = useEffect();
+  
+  const getData = async () => {
+    let result = window.cardano.nami.enable()
+    setApi(result)
+  }
+
+  useEffect(() => {
+    // Fetching Data on Initial Load
+    getData()
+ },[])
+
+ 
+
   return (
     <div className="App">
-    <Header connect={connect} isConnected={isConnected} address={address}/>
+    <Header/>
     <div className="mainWindow">
       <Routes>
         <Route path="/" element={<Swap isConnected={isConnected} address={address} />}/>
